@@ -1,22 +1,30 @@
 package Services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
-import controller.User;
+import controller.UserController;
 
 public class Admin{
 	Scanner sc = new Scanner(System.in);
-	User user = new User();
+	UserController user = new UserController();
 	private static ArrayList<Doctor> doctors = new ArrayList<Doctor>();
 	private static ArrayList<Patient> patients = new ArrayList<Patient>();
 	private static ArrayList<Laboratorist> labtechnicians = new ArrayList<Laboratorist>();
 	private static ArrayList<Pharmacist> pharmacists = new ArrayList<Pharmacist>();
-	
-	
+	private  HashMap<Integer,HashMap<String,String>> slots = new HashMap<Integer,HashMap<String,String>>();
+	private int patientid = 100;
+	public int getPatientid() {
+		return patientid;
+	}
+	public void setPatientid(int patientid) {
+		this.patientid = patientid;
+	}
 	public void defaultusers() {
 		doctors.add(new Doctor("Mahesh","cardiologist"));
-		patients.add(new Patient("Suresh"));
+		patients.add(new Patient("Suresh",100));
 		labtechnicians.add(new Laboratorist("John"));
 		pharmacists.add(new Pharmacist("Ali"));
 	}
@@ -28,9 +36,10 @@ public class Admin{
 		doctors.add(newdoctor);
 	}
 	public void addPatient() {
+		patientid++;
 		System.out.print("Enter patient name: ");
 		String name = sc.next();
-		Patient patient = new Patient(name);
+		Patient patient = new Patient(name,patientid);
 		patients.add(patient);
 	}
 	
@@ -91,6 +100,7 @@ public class Admin{
 		}
 	}
 	
+	
 	public ArrayList<Doctor> getdoctors(){
 		return doctors;
 	}
@@ -105,6 +115,42 @@ public class Admin{
 	
 	public ArrayList<Pharmacist> getPharmacists(){
 		return pharmacists;
-	}	
+	}
+	
+	public HashMap<Integer, HashMap<String, String>> getSlots() {
+		return slots;
+	}
+	public void setSlots(HashMap<Integer, HashMap<String,String>> slots) {
+		this.slots = slots;
+	}
+	public HashMap<String,String> getSlotForAppoitment(){
+		System.out.println("Enter Doctor id");
+		int id = sc.nextInt();
+		if(slots.containsKey(id))
+		return slots.get(id);
+		else
+			slots.put(id, new HashMap<String,String>());
+		return slots.get(id);
+	}
+	
+	public void setSlotForAppoitment(int id,HashMap<String,String> slot){
+		System.out.println("setSlotForAppoitment "+slot.size());
+		 slots.put(id, slot);
+	}
+	
+	public void viewSlots() {
+		System.out.println("Enter Doctor id");
+		int id = sc.nextInt();
+		HashMap<String,String> getslots = slots.get(id);
+		for(Map.Entry<String, String> mapElement :  getslots.entrySet()) {
+			String isbooked = "";
+            if(!mapElement.getValue().equals("vacancy"))
+            	isbooked = "Booked"; 
+            else {
+            	isbooked = "vacancy";	
+            }
+            System.out.println(mapElement.getKey() + " : " + isbooked); 
+		}
+	}
 	
 }

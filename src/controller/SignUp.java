@@ -3,12 +3,11 @@ package controller;
 import java.util.Scanner;
 
 import Services.Admin;
-import Services.Patient;
 
-public class SignUp extends User{
+public class SignUp extends UserController{
 	static Scanner sc = new Scanner(System.in);
 	public void createAccount() {
-		User newuser = new User();
+		UserController newuser = new UserController();
 		System.out.print("Enter username: ");
 		newuser.setUsername(sc.next());
 		System.out.print("Enter password");

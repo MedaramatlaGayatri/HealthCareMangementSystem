@@ -1,7 +1,6 @@
 package Services;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Prescription {
 	private int prescriptionId;

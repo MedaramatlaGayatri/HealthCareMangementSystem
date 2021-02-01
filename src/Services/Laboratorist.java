@@ -5,17 +5,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 public class Laboratorist extends Users{
+	
      private String name;
      private int id = 1600;
-     private static String username;
+     private String username;
      private String Password = "Laboratorist@123";
      Scanner sc = new Scanner(System.in);
      Map<Integer,ArrayList<String>> diagonosticReports = new HashMap<Integer,ArrayList<String>>();
+    
+     public Laboratorist(String string) {
+ 		id++;
+ 		name = string;
+ 		username ="Laboratorist"+id;
+ 		System.out.println("Please set your username and password. Default username and password is "+username+" "+Password); 
+ 	
+ 	}
+
      public String getUsername() {
 		return username;
 	}
@@ -32,14 +39,7 @@ public class Laboratorist extends Users{
 		Password = password;
 	}
 	
-	public Laboratorist(String string) {
-		id++;
-		name = string;
-		username ="Laboratorist"+id;
-		System.out.println("Please set your username and password. Default username and password is "+username+" "+Password); 
 	
-	}
-
 	public Laboratorist() {
 		// TODO Auto-generated constructor stub
 		id++;

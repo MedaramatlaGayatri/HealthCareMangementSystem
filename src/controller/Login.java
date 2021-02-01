@@ -1,5 +1,6 @@
 package controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +11,7 @@ import Services.Patient;
 import Services.Pharmacist;
 
 public class Login {
-	User user = new User();
+	UserController user = new UserController();
 	Scanner sc = new Scanner(System.in);
 	public void loggedInuser(String username,String password, Admin admin) {
 		user.setUsername(username);
@@ -75,8 +76,6 @@ public class Login {
 				break;
 		case 5:loggedInAsAdmin(admin);
 		   break;
-		//case 6: logout();
-		//break;
 		default :System.out.println("Invalid");
 		}
 		if(!flag) {
@@ -131,7 +130,7 @@ public class Login {
 	
 	private void loggedInAsAdmin(Admin admin) {
 		while(true) {
-			System.out.print("1. Add Doctor\t2. Add pateint\t3. Add laboratorist\t4. Pharmacist\t5. Delete Doctor\t6. Delete Patient\t7.Logout");
+			System.out.print("1. Add Doctor\t2. Add pateint\t3. Add laboratorist\t4. Pharmacist\t5. Delete Doctor\t6. Delete Patient\t7.Logout\n8.delte laboratorist\t9.delete pharmacist");
 			int choose = sc.nextInt();
 			int id = 0;
 			switch(choose) {
@@ -153,6 +152,14 @@ public class Login {
 					break;
 			case 7: logout(admin);
 						break;
+			case 8:System.out.println("Enter id:");
+					id = sc.nextInt();
+					admin.deleteLaboratorist(id);;
+					break;
+			case 9:System.out.println("Enter id:");
+					id = sc.nextInt();
+					admin.deletePharmacist(id);
+					break;
       		default: break;
 			}
 		}
@@ -160,7 +167,7 @@ public class Login {
 
 	private void loggedInAsDoctor(Doctor doctor,Admin admin) {
 		while(true) {
-			System.out.print("1. create prescription \t2. manage profile\t3.Log out");
+			System.out.print("1. create prescription \t2. manage profile\t3.logout\t4.view PatientList\t5.view DoctorList\t6.View Laboratorist\t7. view pharmacists\t8.Shedule Appointment\t9.viewSlots");
 			int choose = sc.nextInt();
 			switch(choose) {
 			case 1: doctor.createPrescription();
@@ -177,6 +184,14 @@ public class Login {
 					break;
 			case 7:doctor.viewPharmacistList();
 					break;
+			case 8:try {
+					doctor.scheduleAppointment();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				break;
+			case 9:doctor.viewSlots();
+					break;
 			default: break;
 			}
 			
@@ -185,13 +200,14 @@ public class Login {
 
 	private void loggedInAsPatient(Patient patient,Admin admin) {
 		while(true) {
-			System.out.print("1.view prescription\t3.view doctor list\t4.view laboratorist\t5.view pharmacists\t6.Edit profile\t7.logout");
+			try {
+			System.out.print("1.view prescription\t2.get patient id\t3.view doctor list\t4.view laboratorist\t5.view pharmacists\t6.Edit profile\t7.view slots\t8.book appointment\t9.logout");
 			int choose = sc.nextInt();
 			switch(choose) {
 			case 1:patient.viewPrescription();
 					break;
-			//case 2:System.out.println(patient.getId());
-			//		break;
+			case 2:System.out.println(patient.getId());
+					break;
 			case 3:patient.viewDoctorList();
 			        break;
 			case 4:patient.viewLaboratoristList();
@@ -200,9 +216,23 @@ public class Login {
 					break;
 			case 6:patient.editProfile();
 					break;
-			default:logout(admin);
+			case 7:patient.viewSlots();
+					break;
+			case 8:
+				try {
+					patient.bookAnAppointment();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			     break;
+			case 9:logout(admin);
+			default:System.out.println("Invalid ");
 			break;
 			}
+		}catch(Exception e) {
+			loggedInAs(admin);
+		}
 		}
 	}
 	

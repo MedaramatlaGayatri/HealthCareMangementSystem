@@ -1,17 +1,12 @@
 package Services;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import controller.User;
 
 public class Doctor extends Users{
 	
@@ -22,6 +17,7 @@ public class Doctor extends Users{
 	private String specialization;
 	private static Map<Integer,Prescription> prescripts = new HashMap<Integer,Prescription>();
 	Scanner sc = new Scanner(System.in);
+	AppointmentBooking appointment;
 	public Doctor(String doctorname, String specialization) {
 		super();
 		this.doctorname = doctorname;
@@ -30,6 +26,7 @@ public class Doctor extends Users{
 		username = "Doctor"+Id;
 		password = "Doctor@123";
 		System.out.println("Please set your username and password. Default username and password is "+username+" "+password);
+		appointment = new AppointmentBooking(Id);
 	}
 	public Doctor(String username1) {
 		System.out.println("Logged in as Dr."+doctorname);
@@ -119,5 +116,24 @@ public class Doctor extends Users{
 		Prescription script = new Prescription(patientId,medicines);
 		prescripts.put(patientId,script);
 	}
-
+	 
+	public void scheduleAppointment() throws ParseException {
+		appointment.appointmentScheduling();
+	}
+	
+	@Override
+	public void viewSlots() {
+		System.out.println("Enter Doctor id");
+		int id = sc.nextInt();
+		HashMap<String,String> getslots = getSlots().get(id);
+		for(Map.Entry<String, String> mapElement :  getslots.entrySet()) {
+			String isbooked = "";
+            if(!mapElement.getValue().equals("vacancy"))
+            	isbooked = mapElement.getValue(); 
+            else {
+            	isbooked = "vacancy";
+            }
+            System.out.println(mapElement.getKey() + " : " + isbooked); 
+		}
+	}
 }
